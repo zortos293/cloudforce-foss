@@ -1,70 +1,54 @@
-# Getting Started with Create React App
+# ⚡ Cloudforce (Formerly CloudForce NOW) ⚡
+-------------------------------------------
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Cloudforce is a portable application launcher designed to run games and applications on restricted machines without administrative privileges or on USB drives.
 
-## Available Scripts
+-------------------------------------------
 
-In the project directory, you can run:
+## 📖 History
 
-### `npm start`
+Cloudforce started as a tool to expand GeForce NOW's capabilities by enabling users to run both games and regular applications through the cloud gaming service. It provided a central hub for downloading and launching applications beyond gaming.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Due to the original domain being shut down, the application stopped working. This led to a complete rebuild focused on making it work universally on any computer without administrator access, whether for cloud gaming or local portable applications.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+-------------------------------------------
 
-### `npm test`
+## ✨ Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- 🚀 Portable execution - no installation required
+- 🔓 Runs on restricted machines without admin access 
+- 💾 USB stick compatible
+- ☁️ Preconfigured for cloud gaming services
 
-### `npm run build`
+-------------------------------------------
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🖥️ Supported Environments
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| Environment | Status |
+|-------------|---------|
+| School/Library Computers | ✅ Tested |
+| Work Machines | ✅ Tested |
+| USB Drives | ✅ Tested |
+| Personal Computers | ✅ Tested |
+| GeForce NOW | ✅ Tested* |
+| Boosteroid | ✅ Tested* |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+\* Only works if you have a method to run the launcher executable for the service
 
-### `npm run eject`
+-------------------------------------------
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 📋 System Requirements
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- 🪟 Windows 7/8/10/11
+- 👤 No administrative privileges needed
+- 🌐 Internet connection to download applications
+-------------------------------------------
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## ⚠️ Known Quirks
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- 🛡️ Some antivirus software may flag portable executables
+- 🔄 Cloud gaming services may require initial setup on first run
+- ⚡ Performance depends on internet connection quality
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

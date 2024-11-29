@@ -1,0 +1,12 @@
+Metadata-Version: 1.1
+Name: pyconsole
+Version: 0.5
+Summary: An interactive customizeable shell
+Home-page: https://github.com/Atmaram/pyshell
+Author: Atmaram Shetye
+Author-email: atmaram.shetye@gmail.com
+License: MIT
+Download-URL: https://github.com/Atmaram/pyshell/tarball/0.5
+Description: UNKNOWN
+Keywords: terminal,console,shell,interactive
+Platform: UNKNOWN

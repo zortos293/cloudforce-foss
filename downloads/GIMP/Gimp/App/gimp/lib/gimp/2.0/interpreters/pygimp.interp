@@ -1,0 +1,4 @@
+python=C:\Program Files\GIMP 2\bin\pythonw.exe
+python2=C:\Program Files\GIMP 2\bin\pythonw.exe
+/usr/bin/python=C:\Program Files\GIMP 2\bin\pythonw.exe
+:Python:E::py::python:

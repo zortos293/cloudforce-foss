@@ -1,0 +1,4 @@
+python=PYTHONWDEFAULTPATH
+python2=PYTHONWDEFAULTPATH
+/usr/bin/python=PYTHONWDEFAULTPATH
+:Python:E::py::python:

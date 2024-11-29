@@ -1,6 +1,8 @@
 # ⚡ Cloudforce (Formerly CloudForce NOW) ⚡
 -------------------------------------------
 
+⚠️ THIS PROJECT IS CURRENTLY IN DEVELOPMENT - EXPECTED RELEASE: 2025 ⚠️
+
 Cloudforce is a portable application launcher designed to run games and applications on restricted machines without administrative privileges or on USB drives.
 
 -------------------------------------------
@@ -49,6 +51,4 @@ Due to the original domain being shut down, the application stopped working. Thi
 - 🛡️ Some antivirus software may flag portable executables
 - 🔄 Cloud gaming services may require initial setup on first run
 - ⚡ Performance depends on internet connection quality
-
-
 

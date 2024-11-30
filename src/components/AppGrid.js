@@ -16,6 +16,32 @@ import {
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 
+const IconDisplay = ({ icon }) => {
+  const isUrl = typeof icon === 'string' && (icon.startsWith('http://') || icon.startsWith('https://'));
+  
+  if (isUrl) {
+    return (
+      <Box
+        component="img"
+        src={icon}
+        alt="app icon"
+        sx={{
+          width: '32px',
+          height: '32px',
+          objectFit: 'contain',
+          borderRadius: '4px',
+        }}
+      />
+    );
+  }
+
+  return (
+    <Typography variant="h3" component="span" sx={{ fontSize: '2rem' }}>
+      {icon}
+    </Typography>
+  );
+};
+
 const AppCard = ({ app, onDownload, isDownloading, currentApp }) => {
   return (
     <motion.div
@@ -36,9 +62,7 @@ const AppCard = ({ app, onDownload, isDownloading, currentApp }) => {
       >
         <Stack spacing={2} p={2}>
           <Stack direction="row" alignItems="center" spacing={2}>
-            <Typography variant="h3" component="span" sx={{ fontSize: '2rem' }}>
-              {app.icon}
-            </Typography>
+            <IconDisplay icon={app.icon} />
             <Box flex={1}>
               <Typography variant="h6" noWrap>
                 {app.name}
@@ -58,14 +82,21 @@ const AppCard = ({ app, onDownload, isDownloading, currentApp }) => {
             {app.description}
           </Typography>
 
-          <Stack direction="row" spacing={1} flexWrap="wrap">
+          <Stack direction="row" sx={{ gap: 0.5 }} flexWrap="wrap">
             {app.features?.map((feature, index) => (
               <Chip
                 key={index}
                 label={feature}
                 size="small"
                 variant="outlined"
-                sx={{ m: 0.5 }}
+                sx={{ 
+                  m: '2px',
+                  height: '22px',
+                  '& .MuiChip-label': {
+                    px: 0.75,
+                    fontSize: '0.75rem',
+                  }
+                }}
               />
             ))}
           </Stack>
@@ -142,9 +173,9 @@ const AppGrid = ({
           xs: '1fr',
           sm: 'repeat(2, 1fr)',
           md: 'repeat(3, 1fr)',
+          lg: 'repeat(4, 1fr)',
         },
         gap: 3,
-        p: 2,
       }}
     >
       {apps.map((app) => (

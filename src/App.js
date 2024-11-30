@@ -532,8 +532,10 @@ function App() {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+      {/* Sidebar */}
       <Sidebar
+        width={280}
         categories={activeTab === 0 ? appSources[selectedSource]?.categories : gameSource?.categories}
         selectedCategory={selectedCategory}
         onCategorySelect={setSelectedCategory}
@@ -547,17 +549,20 @@ function App() {
         activeTab={activeTab}
         onTabChange={(e, newValue) => {
           setActiveTab(newValue);
-          setSelectedCategory(null);  // Reset category when switching tabs
-          setSearchQuery('');  // Reset search when switching tabs
-          setSelectedSource('default');  // Reset to default source when switching tabs
+          setSelectedCategory(null);
+          setSearchQuery('');
+          setSelectedSource('default');
         }}
       />
-      <Box 
-        sx={{ 
+
+      {/* Main Content Area */}
+      <Box
+        component="main"
+        sx={{
           flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
           minHeight: '100vh',
-          paddingLeft: '280px', // Width of the sidebar
-          paddingTop: '64px', // Height of the header
           background: theme.palette.mode === 'light'
             ? 'linear-gradient(135deg, #e6e9f0 0%, #eef1f5 100%)'
             : 'linear-gradient(135deg, #0f0f0f 0%, #171717 100%)',
@@ -565,107 +570,93 @@ function App() {
       >
         {/* Header */}
         <Box
+          component="header"
           sx={{
-            position: 'fixed',
-            top: 0,
-            left: '280px', // Width of the sidebar
-            right: 0,
             height: '64px',
-            zIndex: 1200,
             background: 'rgba(18, 18, 18, 0.8)',
             backdropFilter: 'blur(10px)',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+            position: 'sticky',
+            top: 0,
+            zIndex: 1200,
           }}
         >
-          <Container maxWidth="lg">
-            <Stack 
-              direction="row" 
-              justifyContent="space-between" 
-              alignItems="center" 
-              py={2}
-            >
-              <Stack direction="row" spacing={1} alignItems="center">
-                <CloudQueue sx={{ 
-                  fontSize: 35, 
+          <Box
+            sx={{
+              height: '100%',
+              px: 3,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Stack direction="row" spacing={1} alignItems="center">
+              <CloudQueue 
+                sx={{ 
+                  fontSize: 35,
                   color: theme.palette.secondary.main,
                   filter: 'drop-shadow(0 0 10px rgba(255, 105, 180, 0.5))'
-                }} />
-                <Typography 
-                  variant="h5" 
-                  sx={{ 
-                    color: 'white',
-                    fontWeight: 600,
-                    textShadow: '0 0 10px rgba(255, 105, 180, 0.3)'
-                  }}
-                >
-                  CLOUDFORCE
-                </Typography>
-              </Stack>
-
-              <Stack direction="row" spacing={2} alignItems="center">
-                <Tabs 
-                  value={activeTab}
-                  onChange={handleTabChange}
-                  sx={{
-                    '& .MuiTab-root': {
-                      color: 'rgba(255,255,255,0.7)',
-                      minWidth: 120,
-                    }
-                  }}
-                >
-                  <Tab 
-                    icon={<Apps />} 
-                    label="Apps" 
-                    iconPosition="start"
-                  />
-                  <Tab 
-                    icon={<SportsEsports />} 
-                    label="Games" 
-                    iconPosition="start"
-                  />
-                </Tabs>
-
-                <IconButton 
-                  onClick={toggleColorMode}
-                  sx={{ color: 'white' }}
-                >
-                  {mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
-                </IconButton>
-
-                <IconButton 
-                  onClick={handleSettingsOpen}
-                  sx={{ color: 'white' }}
-                >
-                  <SettingsIcon />
-                </IconButton>
-              </Stack>
+                }}
+              />
+              <Typography 
+                variant="h5"
+                sx={{ 
+                  color: 'white',
+                  fontWeight: 600,
+                  textShadow: '0 0 10px rgba(255, 105, 180, 0.3)'
+                }}
+              >
+                CLOUDFORCE
+              </Typography>
             </Stack>
-          </Container>
+
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Tabs 
+                value={activeTab}
+                onChange={handleTabChange}
+                sx={{
+                  '& .MuiTab-root': {
+                    color: 'rgba(255,255,255,0.7)',
+                    minWidth: 120,
+                  }
+                }}
+              >
+                <Tab icon={<Apps />} label="Apps" iconPosition="start" />
+                <Tab icon={<SportsEsports />} label="Games" iconPosition="start" />
+              </Tabs>
+
+              <IconButton onClick={toggleColorMode} sx={{ color: 'white' }}>
+                {mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
+              </IconButton>
+
+              <IconButton onClick={handleSettingsOpen} sx={{ color: 'white' }}>
+                <SettingsIcon />
+              </IconButton>
+            </Stack>
+          </Box>
         </Box>
 
-        {/* Keep the GlobalProgress component */}
-        <GlobalProgress 
-          show={downloading}
-          appName={currentApp}
-          status={status}
-          message={statusMessage}
-          progress={progress}
-          error={error}
-          setDownloading={setDownloading}
-        />
-
         {/* Main Content */}
-        <Container 
-          maxWidth="lg" 
-          sx={{ 
-            py: 3, // Changed from mt: 15
-            px: { xs: 2, sm: 3 },
+        <Box
+          sx={{
+            flexGrow: 1,
+            p: 3,
           }}
         >
+          <GlobalProgress 
+            show={downloading}
+            appName={currentApp}
+            status={status}
+            message={statusMessage}
+            progress={progress}
+            error={error}
+            setDownloading={setDownloading}
+          />
+
           {activeTab === 0 ? (
-            <Stack spacing={5}>
-              {/* Info Card */}
-              <GlassBox sx={{ p: 3 }}>
-                <Stack spacing={3}>
+            <Stack spacing={3}>
+              <GlassBox>
+                <Stack spacing={3} p={3}>
                   <Stack direction="row" spacing={2} alignItems="center">
                     <Typography variant="h6" component="span">💡</Typography>
                     <Typography variant="body1">
@@ -681,7 +672,6 @@ function App() {
                 </Stack>
               </GlassBox>
 
-              {/* Apps Grid */}
               <AppGrid
                 apps={filteredApps}
                 isLoading={isLoading}
@@ -692,10 +682,9 @@ function App() {
               />
             </Stack>
           ) : (
-            <Stack spacing={5}>
-              {/* Info Card for Games */}
-              <GlassBox sx={{ p: 3 }}>
-                <Stack spacing={3}>
+            <Stack spacing={3}>
+              <GlassBox>
+                <Stack spacing={3} p={3}>
                   <Stack direction="row" spacing={2} alignItems="center">
                     <Typography variant="h6" component="span">🎮</Typography>
                     <Typography variant="body1">
@@ -711,7 +700,6 @@ function App() {
                 </Stack>
               </GlassBox>
 
-              {/* Games Grid */}
               <GameGrid
                 games={filteredGames}
                 isLoading={!gameSource}
@@ -722,26 +710,27 @@ function App() {
               />
             </Stack>
           )}
-        </Container>
-
-        <SettingsDialog
-          open={settingsOpen}
-          onClose={handleSettingsClose}
-          onSave={handleSettingsSave}
-          settings={settings}
-          setSettings={setSettings}
-          setSourceManagerOpen={setSourceManagerOpen}
-          appSources={appSources}
-          gameSource={gameSource}
-        />
-        <SourceManager 
-          open={sourceManagerOpen} 
-          onClose={() => setSourceManagerOpen(false)}
-          appSources={appSources}
-          gameSource={gameSource}
-          onSourcesUpdate={handleSourcesUpdate}
-        />
+        </Box>
       </Box>
+
+      <SettingsDialog
+        open={settingsOpen}
+        onClose={handleSettingsClose}
+        onSave={handleSettingsSave}
+        settings={settings}
+        setSettings={setSettings}
+        setSourceManagerOpen={setSourceManagerOpen}
+        appSources={appSources}
+        gameSource={gameSource}
+      />
+      
+      <SourceManager 
+        open={sourceManagerOpen} 
+        onClose={() => setSourceManagerOpen(false)}
+        appSources={appSources}
+        gameSource={gameSource}
+        onSourcesUpdate={handleSourcesUpdate}
+      />
     </Box>
   );
 }

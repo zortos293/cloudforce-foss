@@ -46,9 +46,9 @@
     {
       "id": "cemu",
       "name": "Cemu",
-      "icon": "🎮",
+      "icon": "https://raw.githubusercontent.com/zortos293/Cloudforce-Revamped-Resources/Dev/Resources/cemu.png",
       "category": "emulator",
-      "version": "1.27.1",
+      "version": "1.27.1", 
       "size": "Unknown",
       "source": {
         "name": "Cemu Project",
@@ -66,7 +66,7 @@
     {
       "id": "firefox",
       "name": "Firefox",
-      "icon": "🦊",
+      "icon": "https://raw.githubusercontent.com/zortos293/Cloudforce-Revamped-Resources/Dev/Resources/fox_480px.png",
       "category": "browser",
       "version": "latest",
       "size": "Unknown",
@@ -86,7 +86,7 @@
     {
       "id": "discord",
       "name": "Discord",
-      "icon": "💬",
+      "icon": "https://raw.githubusercontent.com/zortos293/Cloudforce-Revamped-Resources/Dev/Resources/discord_480px.png",
       "category": "communication",
       "version": "latest",
       "size": "Unknown",
@@ -106,7 +106,7 @@
     {
       "id": "process-hacker",
       "name": "Process Hacker",
-      "icon": "🔍",
+      "icon": "https://raw.githubusercontent.com/zortos293/Cloudforce-Revamped-Resources/Dev/Resources/system_task_480px.png",
       "category": "system",
       "version": "latest",
       "size": "Unknown",
@@ -126,7 +126,7 @@
     {
       "id": "anydesk",
       "name": "Anydesk",
-      "icon": "🔗",
+      "icon": "https://raw.githubusercontent.com/zortos293/Cloudforce-Revamped-Resources/Dev/Resources/anydesk_240px.png",
       "category": "utility",
       "version": "latest",
       "size": "3.0 MB",
@@ -146,7 +146,7 @@
     {
       "id": "parsec",
       "name": "Parsec",
-      "icon": "🎮",
+      "icon": "https://raw.githubusercontent.com/zortos293/Cloudforce-Revamped-Resources/Dev/Resources/Parsec_512px.png",
       "category": "utility",
       "version": "latest",
       "size": "13.0 MB",
@@ -166,7 +166,7 @@
     {
       "id": "spotify",
       "name": "Spotify",
-      "icon": "🎵",
+      "icon": "https://raw.githubusercontent.com/zortos293/Cloudforce-Revamped-Resources/Dev/Resources/Spotify.png",
       "category": "media",
       "version": "latest",
       "size": "114.6 MB",
@@ -186,7 +186,7 @@
     {
       "id": "notepad2",
       "name": "Notepad 2",
-      "icon": "📝",
+      "icon": "https://raw.githubusercontent.com/zortos293/Cloudforce-Revamped-Resources/Dev/Resources/notepad_240px.png",
       "category": "utility",
       "version": "latest",
       "size": "898.0 KB",
@@ -206,7 +206,7 @@
     {
       "id": "obs-studio",
       "name": "OBS Studio",
-      "icon": "🎥",
+      "icon": "https://raw.githubusercontent.com/zortos293/Cloudforce-Revamped-Resources/Dev/Resources/obs.png",
       "category": "media",
       "version": "latest",
       "size": "97.7 MB",

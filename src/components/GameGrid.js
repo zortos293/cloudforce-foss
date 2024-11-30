@@ -108,7 +108,14 @@ const GameCard = ({ game, onDownload, isDownloading, currentGame }) => {
                 label={feature}
                 size="small"
                 variant="outlined"
-                sx={{ m: 0.5 }}
+                sx={{ 
+                  m: '2px',  // Use small uniform margin
+                  height: '22px',  // Make chips even smaller
+                  '& .MuiChip-label': {
+                    px: 0.75,  // Reduce padding further
+                    fontSize: '0.75rem',  // Make text smaller
+                  }
+                }}
               />
             ))}
           </Stack>
@@ -202,10 +209,10 @@ const GameGrid = ({
         gridTemplateColumns: {
           xs: '1fr',
           sm: 'repeat(2, 1fr)',
-          lg: 'repeat(3, 1fr)',
+          md: 'repeat(3, 1fr)',
+          lg: 'repeat(4, 1fr)',
         },
         gap: 3,
-        p: 2,
       }}
     >
       {games.map((game) => (

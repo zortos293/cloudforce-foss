@@ -1,5 +1,11 @@
-# ⚡ Cloudforce (Formerly CloudForce NOW) ⚡
--------------------------------------------
+<p align="center">
+<h1 align="center"> ⚡ Cloudforce (Formerly CloudForce NOW) ⚡ </h1>
+</p>
+
+
+<p align="center">
+  <img src="https://github.com/zortos293/cloudforce-foss/blob/main/CloudForce.png?raw=true" alt="Cloudforce Logo" width="200"/>
+</p>
 
 ⚠️ THIS PROJECT IS CURRENTLY IN DEVELOPMENT - EXPECTED RELEASE: 2025 ⚠️
 
@@ -66,4 +72,3 @@ For support, please visit our:
 - 🐛 [GitHub Issues](https://github.com/zortos293/cloudforce-foss/issues)
 
 -------------------------------------------
-    

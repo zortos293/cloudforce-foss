@@ -13,20 +13,20 @@ A CloudForce source JSON file must contain:
 ## Basic Template
 ```json
 {
-"name": "Your Collection Name",
-"author": "Your Name",
-"website": "https://your-website.com",
-"description": "Description of your collection",
-"version": "1.0.0",
-"categories": {
-// Your categories here
-},
-"apps": [
-// Your apps here
-],
-"metadata": {
-// Additional metadata
-}
+    "name": "Your Collection Name",
+    "author": "Your Name",
+    "website": "https://your-website.com",
+    "description": "Description of your collection",
+    "version": "1.0.0",
+    "categories": {
+        // Your categories here
+    },  
+    "apps": [
+        // Your apps here
+    ],
+    "metadata": {
+        // Additional metadata
+    }
 }
 ```
 
@@ -41,18 +41,18 @@ Categories help organize your apps. Each category needs:
 Example:
 ```json
 "categories": {
-"utility": {
-"id": "utility",
-"name": "Utilities",
-"icon": "🔨",
-"description": "Utility applications"
-},
-"browser": {
-"id": "browser",
-"name": "Browsers",
-"icon": "🌐",
-"description": "Web browsers"
-}
+    "utility": {
+    "id": "utility",
+    "name": "Utilities",
+    "icon": "🔨",
+    "description": "Utility applications"
+    },
+    "browser": {
+    "id": "browser",
+    "name": "Browsers",
+    "icon": "🌐",
+    "description": "Web browsers"
+    }
 }
 ```
 
@@ -73,29 +73,29 @@ Each app requires:
 Example app:
 ```json
 {
-"id": "my-app",
-"name": "My App",
-"icon": "📱",
-"category": "utility",
-"version": "1.0.0",
-"size": "10MB",
-"source": {
-"name": "Your Source",
-"url": "https://your-domain.com/downloads/app.zip"
-},
-"paths": {
-"executable": "\\MyApp\\app.exe",
-"install": "\\MyApp"
-},
-"features": [
-"Feature 1",
-"Feature 2"
-],
-"description": "Description of your app",
-"website": "https://app-website.com",
-"portable": true,
-"gfnStatus": "Safe",
-"gfnIssues": "none"
+    "id": "my-app",
+    "name": "My App",
+    "icon": "📱",
+    "category": "utility",
+    "version": "1.0.0",
+    "size": "10MB",
+    "source": {
+        "name": "Your Source",
+        "url": "https://your-domain.com/downloads/app.zip"
+    },
+    "paths": {
+        "executable": "\\MyApp\\app.exe",
+        "install": "\\MyApp"
+    },
+    "features": [
+        "Feature 1",
+        "Feature 2"
+    ],
+    "description": "Description of your app",
+    "website": "https://app-website.com",
+    "portable": true,
+    "gfnStatus": "Safe",
+    "gfnIssues": "none"
 }
 ```     
 
@@ -231,12 +231,6 @@ You can find example sources in the CloudForce repository:
    - No direct downloads
    - CORS issues
 
-## Support
-
-Need help? Contact us:
-- GitHub Issues: [CloudForce Issues](https://github.com/your-repo/issues)
-- Discord: [Join Our Server](https://discord.gg/your-server)
-- Email: support@cloudforce.com
 
 ## Contributing
 
@@ -246,6 +240,3 @@ Want to share your source?
 3. Test thoroughly
 4. Submit a pull request
 
-## License
-
-Your source files should include appropriate licensing information and respect the original software licenses.

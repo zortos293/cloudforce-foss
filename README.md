@@ -57,3 +57,13 @@ Due to the original domain being shut down, the application stopped working. Thi
 - ⚡ Performance depends on internet connection quality
 - 📁 Custom sources must follow [proper JSON structure](CUSTOM_SOURCE_GUIDE.md#structure-overview)
 - 🔒 Some apps may have GeForce NOW compatibility issues (see [GFN Status Types](CUSTOM_SOURCE_GUIDE.md#gfn-status-types))
+
+-------------------------------------------
+## 🆘 Support
+
+For support, please visit our:
+- 💬 [Discord Server](https://discord.gg/zortos-cloud-gaming-926861356148326502)
+- 🐛 [GitHub Issues](https://github.com/zortos293/cloudforce-foss/issues)
+
+-------------------------------------------
+    

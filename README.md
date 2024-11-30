@@ -29,7 +29,7 @@ Due to the original domain being shut down, the application stopped working. Thi
 
 ## 🖥️ Supported Environments
 
-| Environment | Status | GFN Status |
+| Environment | Status | Status |
 |-------------|---------|------------|
 | School/Library Computers | ✅ Tested | Safe |
 | Work Machines | ✅ Tested | Safe |

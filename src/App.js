@@ -1,17 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
-  ThemeProvider,
-  createTheme,
   Box,
   Container,
-  Button,
   Typography,
-  Stack,
+  Button,
+  IconButton,
+  Tabs,
+  Tab,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Select,
+  MenuItem,
   Paper,
-  CircularProgress,
-  Snackbar,
-  Alert,
+  Stack,
+  Card,
+  CardContent,
   LinearProgress,
+  FormControl,
+  InputLabel,
+  useTheme,
+  CircularProgress,
 } from '@mui/material';
 import {
   CloudQueue,
@@ -19,12 +30,23 @@ import {
   Delete,
   Save,
   Refresh,
+  Settings as SettingsIcon,
+  SportsEsports,
+  Apps,
+  Brightness4,
+  Brightness7,
+  CheckCircle,
+  ErrorOutline,
+  Add,
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
-import styled from '@emotion/styled';
-import { CheckCircleOutline, ErrorOutline } from '@mui/icons-material';
 import { keyframes } from '@emotion/react';
-import { CheckCircle } from '@mui/icons-material';
+import axios from 'axios';
+import Sidebar from './components/Sidebar';
+import SourceManager from './components/SourceManager';
+import SettingsDialog from './components/SettingsDialog';
+import AppGrid from './components/AppGrid';
+import GameGrid from './components/GameGrid';
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(-10px); }
@@ -54,87 +76,36 @@ const launchAnimation = keyframes`
   100% { transform: scale(1) translateY(0); }
 `;
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#ff69b4',
-      light: '#ff8dc8',
-      dark: '#d4478f',
-    },
-    secondary: {
-      main: '#4a90e2',
-      light: '#6ba5e7',
-      dark: '#3570b2',
-    },
-    background: {
-      default: '#d4478f',
-      paper: 'rgba(255, 255, 255, 0)',
-    },
-  },
-  components: {
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          backgroundColor: 'transparent',
-          backgroundImage: 'none',
+const GlassBox = ({ children, ...props }) => {
+  const theme = useTheme();
+  return (
+    <Paper
+      elevation={0}
+      sx={{
+        background: theme.palette.mode === 'light' 
+          ? 'rgba(255, 255, 255, 0.8)' 
+          : 'rgba(18, 18, 18, 0.8)',
+        backdropFilter: 'blur(12px)',
+        borderRadius: 4,
+        border: `1px solid ${
+          theme.palette.mode === 'light' 
+            ? 'rgba(255, 255, 255, 0.3)' 
+            : 'rgba(255, 255, 255, 0.05)'
+        }`,
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          background: theme.palette.mode === 'light' 
+            ? 'rgba(255, 255, 255, 0.9)' 
+            : 'rgba(28, 28, 28, 0.9)',
         },
-      },
-    },
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: 25,
-          textTransform: 'none',
-          padding: '12px 24px',
-          transition: 'all 0.3s ease',
-          fontWeight: 600,
-          '&:hover': {
-            transform: 'translateY(-2px)',
-            boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-          },
-        },
-      },
-    },
-    MuiLinearProgress: {
-      styleOverrides: {
-        root: {
-          borderRadius: 10,
-          height: 8,
-          backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        },
-      },
-    },
-  },
-});
-
-const MotionBox = motion(Box);
-
-const GlassBox = styled(Box)(({ theme }) => ({
-  background: 'rgba(255, 255, 255, 0.1)',
-  backdropFilter: 'blur(12px)',
-  borderRadius: '20px',
-  border: 'none',
-  boxShadow: 'none',
-  transition: 'all 0.3s ease',
-  overflow: 'hidden',
-  '&:hover': {
-    background: 'rgba(255, 255, 255, 0.15)',
-  }
-}));
-
-const AppCard = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(2.5),
-  borderRadius: 20,
-  background: 'rgba(255, 255, 255, 0.1)',
-  backdropFilter: 'blur(12px)',
-  border: 'none',
-  transition: 'all 0.3s ease',
-  boxShadow: 'none',
-  '&:hover': {
-    transform: 'translateY(-5px)',
-    background: 'rgba(255, 255, 255, 0.15)',
-  }
-}));
+        ...props.sx
+      }}
+      {...props}
+    >
+      {children}
+    </Paper>
+  );
+};
 
 const GlobalProgress = ({ 
   show, 
@@ -146,6 +117,7 @@ const GlobalProgress = ({
   setDownloading
 }) => {
   const [showAnimation, setShowAnimation] = useState(false);
+  const theme = useTheme();
 
   useEffect(() => {
     if (status === 'launching') {
@@ -160,110 +132,80 @@ const GlobalProgress = ({
 
   if (!show && !showAnimation && !error) return null;
 
-  const showProgressBar = status === 'downloading' || status === 'extracting';
-  const showLoadingBar = status === 'preparing';
-
   return (
     <Box
       sx={{
         position: 'fixed',
-        top: 10,
+        top: 20,
         left: '50%',
         transform: 'translateX(-50%)',
         zIndex: 1200,
         width: '350px',
-        background: error ? 'rgba(244, 67, 54, 0.9)' : 'rgba(255, 255, 255, 0.15)',
-        backdropFilter: 'blur(12px)',
-        borderRadius: '15px',
-        padding: '20px',
-        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-        animation: `${fadeIn} 0.3s ease-out`,
       }}
     >
-      <Stack spacing={1.5}>
-        <Box sx={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center', 
-          gap: 1.5,
-          animation: showAnimation ? `${launchAnimation} 1s ease-out` : 'none'
-        }}>
-          {error ? (
-            <ErrorOutline sx={{ color: 'white', fontSize: '1.5rem' }} />
-          ) : (status === 'launching' || status === 'download_complete') && (
-            <CheckCircle
-              sx={{
-                color: '#4caf50',
-                animation: showAnimation ? `${launchAnimation} 1s ease-out` : `${successPulse} 0.5s ease-out`,
-                fontSize: '1.5rem'
-              }}
-            />
-          )}
-          <Typography 
-            variant="body1"
-            color="white" 
-            textAlign="center"
-            sx={{ 
-              textShadow: '0 1px 2px rgba(0,0,0,0.2)',
-              animation: showAnimation ? `${launchAnimation} 1s ease-out` : `${fadeIn} 0.3s ease-out`,
-              fontSize: '1.1rem',
-              fontWeight: 500
-            }}
-          >
-            {error ? error : message}
-          </Typography>
-        </Box>
-
-        {(showProgressBar || showLoadingBar) && !error && (
-          <Box sx={{ position: 'relative' }}>
-            {showLoadingBar ? (
-              <LinearProgress
+      <GlassBox
+        sx={{
+          p: 3,
+          background: error 
+            ? 'rgba(211, 47, 47, 0.9)' 
+            : 'rgba(255, 255, 255, 0.15)',
+        }}
+      >
+        <Stack spacing={2}>
+          <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
+            {error ? (
+              <ErrorOutline sx={{ color: 'white' }} />
+            ) : (status === 'launching' || status === 'download_complete') && (
+              <CheckCircle
                 sx={{
-                  height: 10,
-                  borderRadius: 5,
+                  color: theme.palette.success.main,
+                  animation: showAnimation 
+                    ? `${launchAnimation} 1s ease-out`
+                    : `${successPulse} 0.5s ease-out`,
+                }}
+              />
+            )}
+            <Typography variant="body1" color="white">
+              {error ? error : message}
+            </Typography>
+          </Stack>
+
+          {status === 'downloading' && !error && (
+            <Box sx={{ position: 'relative', pt: 1 }}>
+              <LinearProgress
+                variant="determinate"
+                value={progress}
+                sx={{
+                  height: 8,
+                  borderRadius: 4,
                   backgroundColor: 'rgba(255, 255, 255, 0.1)',
                   '& .MuiLinearProgress-bar': {
-                    backgroundColor: '#ff69b4',
-                    borderRadius: 5,
-                    animation: `${loadingAnimation} 2s infinite`,
+                    backgroundColor: theme.palette.secondary.main,
+                    borderRadius: 4,
                   }
                 }}
               />
-            ) : (
-              <>
-                <LinearProgress
-                  variant="determinate"
-                  value={progress}
-                  sx={{
-                    height: 10,
-                    borderRadius: 5,
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                    '& .MuiLinearProgress-bar': {
-                      backgroundColor: status === 'extracting' ? '#4caf50' : '#ff69b4',
-                      borderRadius: 5,
-                      transition: 'all 0.3s ease',
-                    }
-                  }}
-                />
-                <Typography
-                  variant="body2"
-                  color="white"
-                  sx={{
-                    position: 'absolute',
-                    right: 0,
-                    top: -25,
-                    fontSize: '0.9rem',
-                    textShadow: '0 1px 2px rgba(0,0,0,0.2)',
-                    animation: `${fadeIn} 0.3s ease-out`,
-                  }}
-                >
-                  {Math.round(progress)}%
-                </Typography>
-              </>
-            )}
-          </Box>
-        )}
-      </Stack>
+              <Typography
+                variant="caption"
+                sx={{
+                  position: 'absolute',
+                  right: 0,
+                  top: -20,
+                  color: 'white',
+                }}
+              >
+                {Math.round(progress)}%
+              </Typography>
+            </Box>
+          )}
+
+          {status === 'extracting' && !error && (
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
+              <CircularProgress size={24} sx={{ color: 'white' }} />
+            </Box>
+          )}
+        </Stack>
+      </GlassBox>
     </Box>
   );
 };
@@ -279,38 +221,21 @@ function App() {
   const [fileType, setFileType] = useState(null);
   const [currentStep, setCurrentStep] = useState(null);
   const [showProgressBar, setShowProgressBar] = useState(true);
-
-  const apps = [
-    { 
-      name: 'Firefox', 
-      icon: '🦊',
-      iconType: 'emoji',
-      url: 'https://download.mozilla.org/?product=firefox-latest&os=win64&lang=en-US',
-      executablePath: '\\Firefox\\firefox.exe'
-    },
-    { 
-      name: 'Process Hacker', 
-      icon: '🧑‍💻',
-      iconType: 'emoji',
-      url: 'https://github.com/processhacker/processhacker/releases/download/v2.39/processhacker-2.39-setup.exe',
-      executablePath: '\\ProcessHacker\\ProcessHacker.exe'
-    },
-    { 
-      name: 'AdvancedRun', 
-      icon: 'https://www.nirsoft.net/utils/advancedrun_icon.png',
-      iconType: 'image',
-      url: 'https://picteon.dev/files/AdvancedRun.exe',
-      executablePath: '\\AdvancedRun.exe'
-    },
-    { 
-      name: 'GIMP', 
-      icon: '🎨',
-      iconType: 'emoji',
-      url: 'https://picteon.dev/files/Gimp.zip',
-      executablePath: '\\GIMP\\App\\gimp\\bin\\gimp-2.10.exe'
-    }
-    // Add URLs for other apps
-  ];
+  const [activeTab, setActiveTab] = useState(0);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [settings, setSettings] = useState({
+    downloadPath: 'B:\\CloudForce\\Loaded',
+    language: 'en',
+    autoLaunch: true,
+  });
+  const [mode, setMode] = useState('dark');
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedSource, setSelectedSource] = useState('default');
+  const [appSources, setAppSources] = useState({});
+  const [sourceManagerOpen, setSourceManagerOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [gameSource, setGameSource] = useState(null);
 
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
 
@@ -368,6 +293,45 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    const loadAppSources = async () => {
+      setIsLoading(true);
+      try {
+        // Load default app source from public folder
+        const response = await fetch('/app-resources/cloudforce-apps.json');
+        const defaultSource = await response.json();
+        
+        // Load additional sources from localStorage
+        const additionalSources = JSON.parse(localStorage.getItem('additionalAppSources') || '{}');
+        
+        setAppSources({
+          default: defaultSource,
+          ...additionalSources
+        });
+      } catch (error) {
+        console.error('Error loading app sources:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadAppSources();
+  }, []);
+
+  useEffect(() => {
+    const loadGameSource = async () => {
+      try {
+        const response = await fetch('/app-resources/cloudforce-games.json');
+        const data = await response.json();
+        setGameSource(data);
+      } catch (error) {
+        console.error('Error loading games:', error);
+      }
+    };
+
+    loadGameSource();
+  }, []);
+
   const handleDownload = async (app) => {
     try {
       // Reset all states at the start of download
@@ -379,15 +343,22 @@ function App() {
       setError(null);
       setFileType(null);
       
+      // Get the URL from the source object
+      const url = app.source?.url;
+      if (!url) {
+        throw new Error('No download URL provided for this app');
+      }
+      
       const response = await fetch(`${API_URL}/download`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          url: app.url,
+          url: url,  // Use the URL from source
           appName: app.name,
-          executablePath: app.executablePath
+          executablePath: app.paths.executable,  // Use paths.executable
+          paths: app.paths  // Send all paths
         }),
       });
 
@@ -416,42 +387,193 @@ function App() {
       setStatus(null);
       setStatusMessage('');
       setProgress(0);
-      setError(null);
-      setFileType(null);
       setTimeout(() => setError(null), 3000);
     }
   };
 
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue);
+  };
+
+  const handleSettingsOpen = () => {
+    setSettingsOpen(true);
+  };
+
+  const handleSettingsClose = () => {
+    setSettingsOpen(false);
+  };
+
+  const handleSettingsSave = () => {
+    // Save settings to localStorage or backend
+    localStorage.setItem('cloudforce_settings', JSON.stringify(settings));
+    handleSettingsClose();
+  };
+
+  const toggleColorMode = () => {
+    setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+  };
+
+  const theme = useTheme();
+
+  const groupedApps = useMemo(() => {
+    const currentSource = appSources[selectedSource];
+    if (!currentSource?.apps) return {};
+
+    return currentSource.apps.reduce((acc, app) => {
+      if (!acc[app.category]) {
+        acc[app.category] = [];
+      }
+      acc[app.category].push(app);
+      return acc;
+    }, {});
+  }, [appSources, selectedSource]);
+
+  const handleGameDownload = async (game) => {
+    try {
+      setDownloading(true);
+      setCurrentApp(game.name);
+      setStatus('preparing');
+      setStatusMessage(`Preparing to download ${game.name}...`);
+      setProgress(0);
+      setError(null);
+      
+      const response = await fetch(`${API_URL}/download`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'rclone',
+          source: game.source,
+          appName: game.name,
+          paths: game.paths,
+          dlc: game.dlc // Include DLC information if selected
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Download failed');
+      }
+
+      const data = await response.json();
+      
+      // Show success message
+      setStatus('launching');
+      setStatusMessage(`${game.name} downloaded successfully!`);
+      
+      setTimeout(() => {
+        setDownloading(false);
+        setCurrentApp('');
+        setStatus(null);
+        setStatusMessage('');
+        setProgress(0);
+      }, 3000);
+    } catch (error) {
+      console.error('Download error:', error);
+      setError(`Failed to download ${game.name}: ${error.message}`);
+      setDownloading(false);
+      setCurrentApp('');
+      setStatus(null);
+      setStatusMessage('');
+      setProgress(0);
+      setTimeout(() => setError(null), 3000);
+    }
+  };
+
+  const filteredApps = useMemo(() => {
+    const currentSource = appSources[selectedSource];
+    if (!currentSource?.apps) return [];
+
+    let filtered = [...currentSource.apps];
+
+    if (selectedCategory) {
+      filtered = filtered.filter(app => app.category === selectedCategory);
+    }
+
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(app => 
+        app.name.toLowerCase().includes(query) ||
+        app.description?.toLowerCase().includes(query) ||
+        app.features?.some(feature => feature.toLowerCase().includes(query))
+      );
+    }
+
+    return filtered;
+  }, [appSources, selectedSource, selectedCategory, searchQuery]);
+
+  const filteredGames = useMemo(() => {
+    if (!gameSource?.games) return [];
+
+    let filtered = [...gameSource.games];
+
+    if (selectedCategory) {
+      filtered = filtered.filter(game => game.category === selectedCategory);
+    }
+
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(game => 
+        game.name.toLowerCase().includes(query) ||
+        game.description?.toLowerCase().includes(query) ||
+        game.features?.some(feature => feature.toLowerCase().includes(query))
+      );
+    }
+
+    return filtered;
+  }, [gameSource, selectedCategory, searchQuery]);
+
+  const handleSourcesUpdate = (type, newSources) => {
+    if (type === 'apps') {
+      setAppSources(newSources);
+    } else {
+      setGameSource(newSources);
+    }
+  };
+
   return (
-    <ThemeProvider theme={theme}>
-      <Box sx={{ 
-        minHeight: '100vh',
-        background: '#db5b9a',
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'radial-gradient(circle at 50% 0%, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.1) 100%)',
-          pointerEvents: 'none',
-        }
-      }}>
-        {/* Modern Header */}
+    <Box sx={{ display: 'flex' }}>
+      <Sidebar
+        categories={activeTab === 0 ? appSources[selectedSource]?.categories : gameSource?.categories}
+        selectedCategory={selectedCategory}
+        onCategorySelect={setSelectedCategory}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        onClearSearch={() => setSearchQuery('')}
+        appSources={appSources}
+        gameSource={gameSource}
+        selectedSource={selectedSource}
+        onSourceSelect={setSelectedSource}
+        activeTab={activeTab}
+        onTabChange={(e, newValue) => {
+          setActiveTab(newValue);
+          setSelectedCategory(null);  // Reset category when switching tabs
+          setSearchQuery('');  // Reset search when switching tabs
+          setSelectedSource('default');  // Reset to default source when switching tabs
+        }}
+      />
+      <Box 
+        sx={{ 
+          flexGrow: 1,
+          minHeight: '100vh',
+          paddingLeft: '280px', // Width of the sidebar
+          paddingTop: '64px', // Height of the header
+          background: theme.palette.mode === 'light'
+            ? 'linear-gradient(135deg, #e6e9f0 0%, #eef1f5 100%)'
+            : 'linear-gradient(135deg, #0f0f0f 0%, #171717 100%)',
+        }}
+      >
+        {/* Header */}
         <Box
           sx={{
             position: 'fixed',
             top: 0,
-            left: 0,
+            left: '280px', // Width of the sidebar
             right: 0,
-            zIndex: 1000,
-            background: 'rgba(26, 26, 26, 0.8)',
+            height: '64px',
+            zIndex: 1200,
+            background: 'rgba(18, 18, 18, 0.8)',
             backdropFilter: 'blur(10px)',
-            borderBottom: 'none',
           }}
         >
           <Container maxWidth="lg">
@@ -464,7 +586,7 @@ function App() {
               <Stack direction="row" spacing={1} alignItems="center">
                 <CloudQueue sx={{ 
                   fontSize: 35, 
-                  color: '#ff69b4',
+                  color: theme.palette.secondary.main,
                   filter: 'drop-shadow(0 0 10px rgba(255, 105, 180, 0.5))'
                 }} />
                 <Typography 
@@ -478,22 +600,49 @@ function App() {
                   CLOUDFORCE
                 </Typography>
               </Stack>
-              <Typography 
-                variant="caption" 
-                sx={{ 
-                  color: 'rgba(255,255,255,0.7)',
-                  backgroundColor: 'rgba(255,255,255,0.1)',
-                  padding: '4px 12px',
-                  borderRadius: '12px',
-                }}
-              >
-                App Launcher
-              </Typography>
+
+              <Stack direction="row" spacing={2} alignItems="center">
+                <Tabs 
+                  value={activeTab}
+                  onChange={handleTabChange}
+                  sx={{
+                    '& .MuiTab-root': {
+                      color: 'rgba(255,255,255,0.7)',
+                      minWidth: 120,
+                    }
+                  }}
+                >
+                  <Tab 
+                    icon={<Apps />} 
+                    label="Apps" 
+                    iconPosition="start"
+                  />
+                  <Tab 
+                    icon={<SportsEsports />} 
+                    label="Games" 
+                    iconPosition="start"
+                  />
+                </Tabs>
+
+                <IconButton 
+                  onClick={toggleColorMode}
+                  sx={{ color: 'white' }}
+                >
+                  {mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
+                </IconButton>
+
+                <IconButton 
+                  onClick={handleSettingsOpen}
+                  sx={{ color: 'white' }}
+                >
+                  <SettingsIcon />
+                </IconButton>
+              </Stack>
             </Stack>
           </Container>
         </Box>
 
-        {/* Global Progress Bar */}
+        {/* Keep the GlobalProgress component */}
         <GlobalProgress 
           show={downloading}
           appName={currentApp}
@@ -508,224 +657,92 @@ function App() {
         <Container 
           maxWidth="lg" 
           sx={{ 
-            mt: 12, 
-            mb: 4,
+            py: 3, // Changed from mt: 15
             px: { xs: 2, sm: 3 },
-            flex: 1,
           }}
         >
-          <Stack spacing={4}>
-            {/* Info Cards */}
-            <Stack 
-              direction={{ xs: 'column', sm: 'row' }} 
-              spacing={2} 
-              sx={{ mb: 4 }}
-            >
-              <GlassBox>
-                <Box sx={{ 
-                  p: 2, 
-                  display: 'flex', 
-                  alignItems: 'center',
-                  gap: 1,
-                }}>
-                  <Typography 
-                    component="span" 
-                    sx={{ fontSize: '1.2rem' }}
-                  >
-                    💡
-                  </Typography>
-                  <Typography 
-                    variant="body2" 
-                    sx={{ 
-                      color: 'white',
-                      textShadow: '0 1px 2px rgba(0,0,0,0.2)',
-                      fontWeight: 500,
-                      flex: 1,
-                    }}
-                  >
-                    Press the button twice to run the program
-                  </Typography>
-                </Box>
-              </GlassBox>
-              <GlassBox>
-                <Box sx={{ 
-                  p: 2, 
-                  display: 'flex', 
-                  alignItems: 'center',
-                  gap: 1,
-                }}>
-                  <Typography 
-                    component="span" 
-                    sx={{ fontSize: '1.2rem' }}
-                  >
-                    ⚠️
-                  </Typography>
-                  <Typography 
-                    variant="body2" 
-                    sx={{ 
-                      color: 'white',
-                      textShadow: '0 1px 2px rgba(0,0,0,0.2)',
-                      fontWeight: 500,
-                      flex: 1,
-                    }}
-                  >
-                    Don't close while saving files
-                  </Typography>
-                </Box>
-              </GlassBox>
-            </Stack>
-
-            {/* Apps Grid */}
-            <Box
-              sx={{
-                display: 'grid',
-                gridTemplateColumns: {
-                  xs: '1fr',
-                  sm: 'repeat(auto-fit, minmax(250px, 1fr))',
-                },
-                gap: 2,
-                py: 2,
-              }}
-            >
-              {apps.map((app, index) => (
-                <MotionBox
-                  key={index}
-                  component={motion.div}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <AppCard>
-                    <Stack spacing={2}>
-                      <Button
-                        variant="contained"
-                        startIcon={
-                          downloading && currentApp === app.name ? (
-                            <CircularProgress size={24} color="inherit" />
-                          ) : app.iconType === 'emoji' ? (
-                            <Typography sx={{ 
-                              fontSize: '1.8rem',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center'
-                            }}>
-                              {app.icon}
-                            </Typography>
-                          ) : (
-                            <Box
-                              component="img"
-                              src={app.icon}
-                              sx={{
-                                width: 32,
-                                height: 32,
-                                objectFit: 'contain',
-                              }}
-                            />
-                          )
-                        }
-                        fullWidth
-                        onClick={() => handleDownload(app)}
-                        disabled={downloading}
-                        sx={{
-                          background: 'rgba(255, 105, 180, 0.7)',
-                          backdropFilter: 'blur(5px)',
-                          boxShadow: 'none',
-                          border: 'none',
-                          color: 'white',
-                          display: 'flex',
-                          justifyContent: 'flex-start',
-                          gap: 2,
-                          '&:hover': {
-                            background: 'rgba(255, 105, 180, 0.9)',
-                            boxShadow: '0 4px 15px rgba(255,105,180,0.3)',
-                            color: 'white',
-                          },
-                          '&:disabled': {
-                            background: 'rgba(255,105,180,0.5)',
-                            color: 'white'
-                          },
-                          height: '60px',
-                          borderRadius: '15px',
-                          textTransform: 'none',
-                          fontSize: '1.1rem',
-                          fontWeight: 500,
-                          padding: '12px 24px',
-                        }}
-                      >
-                        {app.name}
-                      </Button>
-                    </Stack>
-                  </AppCard>
-                </MotionBox>
-              ))}
-            </Box>
-          </Stack>
-        </Container>
-
-        {/* Footer */}
-        <Box sx={{ 
-          width: '100%',
-          mt: 'auto',
-          pb: 4,
-        }}>
-          <Container maxWidth="lg">
-            <Stack spacing={3}>
-              {/* Footer Actions */}
-              <GlassBox sx={{ p: 2 }}>
-                <Stack 
-                  direction={{ xs: 'column', sm: 'row' }} 
-                  spacing={2} 
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  {['Delete Save', 'Save Files', 'Load Files'].map((text, index) => (
-                    <Button
-                      key={text}
-                      variant="contained"
-                      startIcon={
-                        index === 0 ? <Delete sx={{ fontSize: 24 }} /> : 
-                        index === 1 ? <Save sx={{ fontSize: 24 }} /> : 
-                        <Refresh sx={{ fontSize: 24 }} />
-                      }
-                      sx={{ 
-                        background: 'rgba(255, 105, 180, 0.7)',
-                        backdropFilter: 'blur(5px)',
-                        color: 'white',
-                        boxShadow: 'none',
-                        border: 'none',
-                        '&:hover': {
-                          background: 'rgba(255, 105, 180, 0.9)',
-                          boxShadow: '0 4px 15px rgba(255,105,180,0.3)',
-                        },
-                        height: '60px',
-                        borderRadius: '15px',
-                        textTransform: 'none',
-                        fontSize: '1.2rem',
-                        minWidth: '180px',
-                        padding: '12px 24px'
-                      }}
-                    >
-                      {text}
-                    </Button>
-                  ))}
+          {activeTab === 0 ? (
+            <Stack spacing={5}>
+              {/* Info Card */}
+              <GlassBox sx={{ p: 3 }}>
+                <Stack spacing={3}>
+                  <Stack direction="row" spacing={2} alignItems="center">
+                    <Typography variant="h6" component="span">💡</Typography>
+                    <Typography variant="body1">
+                      Press the button twice to run the program
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row" spacing={2} alignItems="center">
+                    <Typography variant="h6" component="span">⚠️</Typography>
+                    <Typography variant="body1">
+                      Don't close while saving files
+                    </Typography>
+                  </Stack>
                 </Stack>
               </GlassBox>
 
-              {/* Load Folder Info */}
-              <Typography 
-                variant="body2" 
-                align="center" 
-                sx={{ 
-                  color: 'rgba(255,255,255,0.9)',
-                  textShadow: '0 1px 2px rgba(0,0,0,0.2)',
-                }}
-              >
-                Load Folder: B:\CloudForce\Loaded
-              </Typography>
+              {/* Apps Grid */}
+              <AppGrid
+                apps={filteredApps}
+                isLoading={isLoading}
+                onDownload={handleDownload}
+                isDownloading={downloading}
+                currentApp={currentApp}
+                searchQuery={searchQuery}
+              />
             </Stack>
-          </Container>
-        </Box>
+          ) : (
+            <Stack spacing={5}>
+              {/* Info Card for Games */}
+              <GlassBox sx={{ p: 3 }}>
+                <Stack spacing={3}>
+                  <Stack direction="row" spacing={2} alignItems="center">
+                    <Typography variant="h6" component="span">🎮</Typography>
+                    <Typography variant="body1">
+                      Games are downloaded using rclone from cloud storage
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row" spacing={2} alignItems="center">
+                    <Typography variant="h6" component="span">💾</Typography>
+                    <Typography variant="body1">
+                      Make sure you have enough storage space available
+                    </Typography>
+                  </Stack>
+                </Stack>
+              </GlassBox>
+
+              {/* Games Grid */}
+              <GameGrid
+                games={filteredGames}
+                isLoading={!gameSource}
+                onDownload={handleGameDownload}
+                isDownloading={downloading}
+                currentGame={currentApp}
+                searchQuery={searchQuery}
+              />
+            </Stack>
+          )}
+        </Container>
+
+        <SettingsDialog
+          open={settingsOpen}
+          onClose={handleSettingsClose}
+          onSave={handleSettingsSave}
+          settings={settings}
+          setSettings={setSettings}
+          setSourceManagerOpen={setSourceManagerOpen}
+          appSources={appSources}
+          gameSource={gameSource}
+        />
+        <SourceManager 
+          open={sourceManagerOpen} 
+          onClose={() => setSourceManagerOpen(false)}
+          appSources={appSources}
+          gameSource={gameSource}
+          onSourcesUpdate={handleSourcesUpdate}
+        />
       </Box>
-    </ThemeProvider>
+    </Box>
   );
 }
 

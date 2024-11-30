@@ -1,0 +1,154 @@
+{
+  "name": "CloudForce Games Collection",
+  "author": "CloudForce Team",
+  "website": "https://picteon.dev",
+  "description": "Official CloudForce game collection",
+  "version": "1.0.0",
+  "categories": {
+    "action": {
+      "id": "action",
+      "name": "Action Games",
+      "icon": "🎮",
+      "description": "Action and adventure games"
+    },
+    "rpg": {
+      "id": "rpg",
+      "name": "RPG",
+      "icon": "⚔️",
+      "description": "Role-playing games"
+    },
+    "racing": {
+      "id": "racing",
+      "name": "Racing",
+      "icon": "🏎️",
+      "description": "Racing and sports games"
+    },
+    "strategy": {
+      "id": "strategy",
+      "name": "Strategy",
+      "icon": "🎯",
+      "description": "Strategy and simulation games"
+    }
+  },
+  "games": [
+    {
+      "id": "cyberpunk2077",
+      "name": "Cyberpunk 2077",
+      "background_image": "https://media.rawg.io/media/games/26d/26d4437715bee60138dab4a7c8c59c92.jpg",
+      "category": "action",
+      "size": "65GB",
+      "platform": "GeForce NOW",
+      "version": "2.0",
+      "source": {
+        "type": "rclone",
+        "remote": "games",
+        "path": "Cyberpunk2077"
+      },
+      "paths": {
+        "executable": "\\GFN\\Cyberpunk2077\\bin\\x64\\Cyberpunk2077.exe",
+        "install": "GFN\\Cyberpunk2077"
+      },
+      "features": [
+        "Open World",
+        "RPG Elements",
+        "Ray Tracing",
+        "First Person"
+      ],
+      "description": "An open-world action game set in Night City",
+      "website": "https://www.cyberpunk.net",
+      "requirements": {
+        "os": "Windows 10 64-bit",
+        "cpu": "Intel Core i7-4790 or AMD Ryzen 3 3200G",
+        "gpu": "NVIDIA GeForce GTX 1060 6GB or AMD Radeon RX 580 8GB",
+        "ram": "12 GB",
+        "storage": "70 GB"
+      },
+      "dlc": [
+        {
+          "id": "phantom-liberty",
+          "name": "Phantom Liberty",
+          "size": "25GB",
+          "source": {
+            "type": "rclone",
+            "remote": "games",
+            "path": "Cyberpunk2077/DLC/PhantomLiberty"
+          }
+        }
+      ]
+    },
+    {
+      "id": "witcher3",
+      "name": "The Witcher 3: Wild Hunt",
+      "background_image": "https://media.rawg.io/media/games/618/618c2031a07bbff6b4f611f10b6bcdbc.jpg",
+      "category": "rpg",
+      "size": "50GB",
+      "platform": "Boosteroid",
+      "version": "GOTY Edition",
+      "source": {
+        "type": "rclone",
+        "remote": "games",
+        "path": "Witcher3"
+      },
+      "paths": {
+        "executable": "\\Boosteroid\\Witcher3\\bin\\x64\\witcher3.exe",
+        "install": "Boosteroid\\Witcher3"
+      },
+      "features": [
+        "Open World",
+        "Story Rich",
+        "Fantasy",
+        "Third Person"
+      ],
+      "description": "Epic action RPG in a dark fantasy world",
+      "website": "https://www.thewitcher.com",
+      "requirements": {
+        "os": "Windows 7/8/10 64-bit",
+        "cpu": "Intel Core i5-2500K or AMD FX-8350",
+        "gpu": "NVIDIA GeForce GTX 770 or AMD Radeon R9 290",
+        "ram": "8 GB",
+        "storage": "50 GB"
+      },
+      "dlc": [
+        {
+          "id": "blood-and-wine",
+          "name": "Blood and Wine",
+          "size": "15GB",
+          "source": {
+            "type": "rclone",
+            "remote": "games",
+            "path": "Witcher3/DLC/BloodAndWine"
+          }
+        },
+        {
+          "id": "hearts-of-stone",
+          "name": "Hearts of Stone",
+          "size": "10GB",
+          "source": {
+            "type": "rclone",
+            "remote": "games",
+            "path": "Witcher3/DLC/HeartsOfStone"
+          }
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "lastUpdated": "2024-03-15",
+    "minVersion": "1.0.0",
+    "supportUrl": "https://picteon.dev/support",
+    "updateUrl": "https://picteon.dev/app-resources/cloudforce-games.json",
+    "rcloneConfig": {
+      "defaultRemote": "games",
+      "remotes": {
+        "games": {
+          "type": "drive",
+          "description": "Main games storage"
+        },
+        "backup": {
+          "type": "s3",
+          "description": "Backup storage for games"
+        }
+      }
+    }
+  }
+} 

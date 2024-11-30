@@ -1,0 +1,273 @@
+{
+  "name": "CloudForce Apps Collection",
+  "author": "CloudForce Team",
+  "website": "https://picteon.dev",
+  "description": "Official CloudForce app collection",
+  "version": "1.0.0",
+  "categories": {
+    "browser": {
+      "id": "browser",
+      "name": "Browsers",
+      "icon": "🌐",
+      "description": "Web browsers for internet access"
+    },
+    "system": {
+      "id": "system",
+      "name": "System Tools",
+      "icon": "🔧",
+      "description": "System utilities and management tools"
+    },
+    "emulator": {
+      "id": "emulator",
+      "name": "Emulators",
+      "icon": "🎮",
+      "description": "Game system emulators"
+    },
+    "media": {
+      "id": "media",
+      "name": "Media",
+      "icon": "🎬",
+      "description": "Media players and editors"
+    },
+    "utility": {
+      "id": "utility",
+      "name": "Utilities",
+      "icon": "🔨",
+      "description": "General utilities"
+    },
+    "communication": {
+      "id": "communication",
+      "name": "Communication",
+      "icon": "💬",
+      "description": "Communication tools"
+    }
+  },
+  "apps": [
+    {
+      "id": "cemu",
+      "name": "Cemu",
+      "icon": "🎮",
+      "category": "emulator",
+      "version": "1.27.1",
+      "size": "Unknown",
+      "source": {
+        "name": "Cemu Project",
+        "url": "https://nightly.link/cemu-project/Cemu/workflows/build_check/main/cemu-bin-windows-x64.zip"
+      },
+      "paths": {
+        "executable": "cemu_1.27.1\\Cemu.exe",
+        "install": "cemu_1.27.1"
+      },
+      "features": ["Wii U Emulation", "High Compatibility", "Graphics Packs"],
+      "description": "Cemu is a Wii U emulator for Windows.",
+      "gfnStatus": "Unsafe",
+      "gfnIssues": "File open window crashes gfn drag and drop your roms will fix it"
+    },
+    {
+      "id": "firefox",
+      "name": "Firefox",
+      "icon": "🦊",
+      "category": "browser",
+      "version": "latest",
+      "size": "Unknown",
+      "source": {
+        "name": "Picteon",
+        "url": "https://picteon.dev/files/Firefox.zip"
+      },
+      "paths": {
+        "executable": "Firefox\\runthis.exe",
+        "install": "Firefox"
+      },
+      "features": ["Fast", "Privacy-focused", "Customizable"],
+      "description": "Firefox is a free web browser for Windows.",
+      "gfnStatus": "Safe",
+      "gfnIssues": "none"
+    },
+    {
+      "id": "discord",
+      "name": "Discord",
+      "icon": "💬",
+      "category": "communication",
+      "version": "latest",
+      "size": "Unknown",
+      "source": {
+        "name": "Discord",
+        "url": "https://dl.discordapp.net/distro/app/stable/win/x86/1.0.9007/DiscordSetup.exe"
+      },
+      "paths": {
+        "executable": "C:\\Users\\kiosk\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Discord Inc\\Discord.lnk",
+        "install": ""
+      },
+      "features": ["Voice Chat", "Text Chat", "Screen Sharing"],
+      "description": "Discord is a free and open-source voice and text chat app for Windows. (ONLY Works on GFN)",
+      "gfnStatus": "Safe",
+      "gfnIssues": "none"
+    },
+    {
+      "id": "process-hacker",
+      "name": "Process Hacker",
+      "icon": "🔍",
+      "category": "system",
+      "version": "latest",
+      "size": "Unknown",
+      "source": {
+        "name": "Picteon",
+        "url": "https://picteon.dev/files/ProcessHacker.zip"
+      },
+      "paths": {
+        "executable": "\\ProcessHacker\\ProcessHacker.exe",
+        "install": "\\ProcessHacker"
+      },
+      "features": ["Process Management", "System Monitoring", "Advanced Tools"],
+      "description": "Process Hacker is a free and open-source process viewer and manager for Windows.",
+      "gfnStatus": "Safe",
+      "gfnIssues": "none"
+    },
+    {
+      "id": "anydesk",
+      "name": "Anydesk",
+      "icon": "🔗",
+      "category": "utility",
+      "version": "latest",
+      "size": "3.0 MB",
+      "source": {
+        "name": "Picteon",
+        "url": "https://picteon.dev/files/AnyDesk.exe"
+      },
+      "paths": {
+        "executable": "AnyDesk.exe",
+        "install": ""
+      },
+      "features": ["Remote Desktop", "Low Latency", "File Transfer"],
+      "description": "Anydesk is a free remote desktop app for Windows.",
+      "gfnStatus": "Safe",
+      "gfnIssues": "none"
+    },
+    {
+      "id": "parsec",
+      "name": "Parsec",
+      "icon": "🎮",
+      "category": "utility",
+      "version": "latest",
+      "size": "13.0 MB",
+      "source": {
+        "name": "Picteon",
+        "url": "https://picteon.dev/files/Parsec%20%282%29.zip"
+      },
+      "paths": {
+        "executable": "Parsec\\parsecd.exe",
+        "install": "Parsec"
+      },
+      "features": ["Game Streaming", "Low Latency", "Remote Desktop"],
+      "description": "Parsec is a free remote desktop app for Windows.",
+      "gfnStatus": "Safe",
+      "gfnIssues": "none"
+    },
+    {
+      "id": "spotify",
+      "name": "Spotify",
+      "icon": "🎵",
+      "category": "media",
+      "version": "latest",
+      "size": "114.6 MB",
+      "source": {
+        "name": "Picteon",
+        "url": "https://picteon.dev/files/Spotify.zip"
+      },
+      "paths": {
+        "executable": "\\Spotify\\Spotify.exe",
+        "install": "\\Spotify"
+      },
+      "features": ["Music Streaming", "Offline Mode", "Playlists"],
+      "description": "Digital music, podcast, and video service.",
+      "gfnStatus": "Safe",
+      "gfnIssues": "none"
+    },
+    {
+      "id": "notepad2",
+      "name": "Notepad 2",
+      "icon": "📝",
+      "category": "utility",
+      "version": "latest",
+      "size": "898.0 KB",
+      "source": {
+        "name": "Picteon",
+        "url": "https://picteon.dev/files/Notepad2x64.exe"
+      },
+      "paths": {
+        "executable": "Notepad2x64.exe",
+        "install": ""
+      },
+      "features": ["Text Editing", "Syntax Highlighting", "Lightweight"],
+      "description": "Notepad 2 is a fast and lightweight text editor.",
+      "gfnStatus": "Safe",
+      "gfnIssues": "none"
+    },
+    {
+      "id": "obs-studio",
+      "name": "OBS Studio",
+      "icon": "🎥",
+      "category": "media",
+      "version": "latest",
+      "size": "97.7 MB",
+      "source": {
+        "name": "Picteon",
+        "url": "https://picteon.dev/files/obs-studio.zip"
+      },
+      "paths": {
+        "executable": "obs-studio\\bin\\64bit\\obs64.exe",
+        "install": "obs-studio"
+      },
+      "features": ["Screen Recording", "Live Streaming", "Scene Composition"],
+      "description": "Free and open source software for video recording and live streaming",
+      "gfnStatus": "Safe",
+      "gfnIssues": "none"
+    },
+    {
+      "id": "gimp",
+      "name": "GIMP",
+      "icon": "🎨",
+      "category": "creative",
+      "version": "latest",
+      "size": "328.8 MB",
+      "source": {
+        "name": "Picteon",
+        "url": "https://picteon.dev/files/Gimp.zip"
+      },
+      "paths": {
+        "executable": "\\GIMP\\App\\gimp\\bin\\gimp-2.10.exe",
+        "install": "\\GIMP"
+      },
+      "features": ["Image Editing", "Layer Support", "Plugin System"],
+      "description": "Free and open source image editor",
+      "gfnStatus": "Safe",
+      "gfnIssues": "none"
+    },
+    {
+      "id": "brave",
+      "name": "Brave Browser",
+      "icon": "🦁",
+      "category": "browser",
+      "version": "latest",
+      "size": "513.2 MB",
+      "source": {
+        "name": "Picteon",
+        "url": "https://picteon.dev/files/Brave.zip"
+      },
+      "paths": {
+        "executable": "\\Brave\\brave.exe",
+        "install": "\\Brave"
+      },
+      "features": ["Privacy Focus", "Built-in Ad Blocker", "Crypto Wallet"],
+      "description": "Privacy-focused web browser with built-in ad blocking",
+      "gfnStatus": "Safe",
+      "gfnIssues": "none"
+    }
+  ],
+  "metadata": {
+    "lastUpdated": "2024-03-15",
+    "minVersion": "1.0.0",
+    "supportUrl": "https://picteon.dev/support",
+    "updateUrl": "https://picteon.dev/app-resources/cloudforce-apps.json"
+  }
+} 

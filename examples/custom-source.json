@@ -1,0 +1,43 @@
+{
+  "name": "Custom App Collection",
+  "author": "Your Name",
+  "website": "https://your-website.com",
+  "description": "A collection of useful applications",
+  "version": "1.0.0",
+  "categories": {
+    "browser": {
+      "id": "browser",
+      "name": "Browsers",
+      "icon": "🌐",
+      "description": "Web browsers"
+    },
+    "utility": {
+      "id": "utility",
+      "name": "Utilities",
+      "icon": "🔧",
+      "description": "Utility applications"
+    }
+  },
+  "apps": [
+    {
+      "id": "custom-app-1",
+      "name": "Custom App 1",
+      "icon": "📱",
+      "category": "utility",
+      "version": "1.0.0",
+      "size": "10MB",
+      "source": {
+        "name": "Custom Source",
+        "url": "https://example.com/downloads/app1.zip"
+      },
+      "paths": {
+        "executable": "\\CustomApp1\\app.exe",
+        "install": "\\CustomApp1"
+      },
+      "features": ["Feature 1", "Feature 2"],
+      "description": "A custom application",
+      "website": "https://example.com/app1",
+      "portable": true
+    }
+  ]
+} 

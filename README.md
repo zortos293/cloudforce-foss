@@ -3,7 +3,7 @@
 
 ⚠️ THIS PROJECT IS CURRENTLY IN DEVELOPMENT - EXPECTED RELEASE: 2025 ⚠️
 
-Cloudforce is a portable application launcher designed to run games and applications on restricted machines without administrative privileges or on USB drives.
+Cloudforce is a portable application launcher designed to run games and applications on restricted machines without administrative privileges or on USB drives. It supports custom app sources following the format specified in our [Custom Source Guide](CUSTOM_SOURCE_GUIDE.md).
 
 -------------------------------------------
 
@@ -21,19 +21,22 @@ Due to the original domain being shut down, the application stopped working. Thi
 - 🔓 Runs on restricted machines without admin access 
 - 💾 USB stick compatible
 - ☁️ Preconfigured for cloud gaming services
+- 📦 Custom app source support with JSON configuration
+- 🔄 Automatic app updates and version tracking
+- 📱 Categorized app management
 
 -------------------------------------------
 
 ## 🖥️ Supported Environments
 
-| Environment | Status |
-|-------------|---------|
-| School/Library Computers | ✅ Tested |
-| Work Machines | ✅ Tested |
-| USB Drives | ✅ Tested |
-| Personal Computers | ✅ Tested |
-| GeForce NOW | ✅ Tested* |
-| Boosteroid | ✅ Tested* |
+| Environment | Status | GFN Status |
+|-------------|---------|------------|
+| School/Library Computers | ✅ Tested | Safe |
+| Work Machines | ✅ Tested | Safe |
+| USB Drives | ✅ Tested | Safe |
+| Personal Computers | ✅ Tested | Safe |
+| GeForce NOW | ✅ Tested* | Safe |
+| Boosteroid | ✅ Tested* | Unsafe |
 
 \* Only works if you have a method to run the launcher executable for the service
 
@@ -44,6 +47,7 @@ Due to the original domain being shut down, the application stopped working. Thi
 - 🪟 Windows 7/8/10/11
 - 👤 No administrative privileges needed
 - 🌐 Internet connection to download applications
+- 💽 Storage space for downloaded apps
 -------------------------------------------
 
 ## ⚠️ Known Quirks
@@ -51,4 +55,5 @@ Due to the original domain being shut down, the application stopped working. Thi
 - 🛡️ Some antivirus software may flag portable executables
 - 🔄 Cloud gaming services may require initial setup on first run
 - ⚡ Performance depends on internet connection quality
-
+- 📁 Custom sources must follow [proper JSON structure](CUSTOM_SOURCE_GUIDE.md#structure-overview)
+- 🔒 Some apps may have GeForce NOW compatibility issues (see [GFN Status Types](CUSTOM_SOURCE_GUIDE.md#gfn-status-types))

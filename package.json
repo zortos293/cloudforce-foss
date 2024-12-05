@@ -28,7 +28,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron:start": "electron .",
-    "electron:build": "npm run build && electron-builder",
+    "electron:build": "npm run build && xcopy /E /I /Y electron build\\electron && electron-builder build --win",
     "electron:dev": "concurrently \"cross-env BROWSER=none npm start\" \"wait-on http://localhost:3000 && npm run electron:start\""
   },
   "eslintConfig": {
@@ -61,12 +61,22 @@
   "build": {
     "appId": "com.cloudforce.app",
     "productName": "Cloudforce",
+    "icon": "build/favicon.ico",
     "files": [
       "build/**/*",
-      "electron/**/*"
+      "electron/**/*",
+      "node_modules/**/*"
     ],
+    "directories": {
+      "buildResources": "public",
+      "output": "dist"
+    },
+    "extraMetadata": {
+      "main": "electron/main.js"
+    },
     "win": {
       "target": "portable",
+      "icon": "build/favicon.ico",
       "sign": false
     }
   }

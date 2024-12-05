@@ -7,7 +7,7 @@
 /downloads/*
 # testing
 /coverage
-
+/dist
 # production
 /build
 

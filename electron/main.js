@@ -8,27 +8,40 @@ const extract = require('extract-zip');
 const { exec } = require('child_process');
 const axios = require('axios');
 
-// Use dynamic import for electron-is-dev
-let isDev;
-(async () => {
-  isDev = (await import('electron-is-dev')).default;
-})();
+// Check if we're in development mode
+const isDev = !app.isPackaged;
 
 // Create Express app
 const serverApp = express();
 serverApp.use(cors());
 serverApp.use(express.json());
 
-// Serve static files from the build directory
-serverApp.use('/static', express.static(path.join(__dirname, '../build/static')));
-serverApp.use(express.static(path.join(__dirname, '../build')));
+// Update the static file serving paths
+const getAssetPath = (assetPath) => {
+  return isDev 
+    ? path.join(__dirname, '..', assetPath)
+    : path.join(process.resourcesPath, 'app.asar', assetPath);
+};
 
-const DOWNLOAD_DIR = path.join(__dirname, '../downloads');
+// Update the static file serving
+serverApp.use('/static', express.static(getAssetPath('build/static')));
+serverApp.use(express.static(getAssetPath('build')));
+
+// Get app data path for downloads
+const DOWNLOAD_DIR = path.join(
+  app.getPath('userData'),
+  'downloads'
+);
+
 console.log('Download directory:', DOWNLOAD_DIR);
 
 // Ensure download directory exists
 if (!fs.existsSync(DOWNLOAD_DIR)) {
-  fs.mkdirSync(DOWNLOAD_DIR, { recursive: true });
+  try {
+    fs.mkdirSync(DOWNLOAD_DIR, { recursive: true });
+  } catch (error) {
+    console.error('Error creating downloads directory:', error);
+  }
 }
 
 // Create WebSocket server on port 3002
@@ -214,9 +227,9 @@ serverApp.post('/download', async (req, res) => {
   }
 });
 
-// Catch-all route to serve index.html
+// Update the catch-all route
 serverApp.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../build/index.html'));
+  res.sendFile(getAssetPath('build/index.html'));
 });
 
 // Start the server

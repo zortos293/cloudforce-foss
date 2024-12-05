@@ -10,6 +10,22 @@
 ⚠️ THIS PROJECT IS CURRENTLY IN DEVELOPMENT - EXPECTED RELEASE: 2025 ⚠️
 
 Cloudforce is a portable application launcher designed to run games and applications on restricted machines without administrative privileges or on USB drives. It supports custom app sources following the format specified in our [Custom Source Guide](CUSTOM_SOURCE_GUIDE.md).
+-------------------------------------------
+
+## ⬇️ Downloads
+
+### Latest Release (v0.1.0)
+
+| Type | Download | Description |
+|------|----------|-------------|
+| 💻 Portable EXE | [Cloudforce.0.1.0.exe](https://github.com/zortos293/cloudforce-foss/releases/download/v0.1.0/Cloudforce.0.1.0.exe) | Single-file portable executable |
+| 📦 ZIP Archive | [win-unpacked.zip](https://github.com/zortos293/cloudforce-foss/releases/download/v0.1.0/win-unpacked.zip) | Portable ZIP package for Windows |
+
+Both versions are portable and require no installation. Simply download and run!
+
+> 📝 **Note:** Check our [Release Notes](RELEASE_NOTES.md) for changes and known issues.
+
+-------------------------------------------
 
 -------------------------------------------
 

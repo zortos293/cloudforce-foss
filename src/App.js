@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import {
-  Box,
   Container,
-  Typography,
   Button,
-  IconButton,
   Tabs,
   Tab,
   Dialog,
@@ -14,15 +11,18 @@ import {
   TextField,
   Select,
   MenuItem,
-  Paper,
-  Stack,
   Card,
   CardContent,
   LinearProgress,
   FormControl,
   InputLabel,
-  useTheme,
+  Box,
+  Stack,
+  Typography,
+  Paper,
+  IconButton,
   CircularProgress,
+  useTheme
 } from '@mui/material';
 import {
   CloudQueue,
@@ -237,13 +237,13 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [gameSource, setGameSource] = useState(null);
 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
-
   useEffect(() => {
-    const websocket = new WebSocket('ws://localhost:3002');
+    const wsUrl = window.electron ? 'ws://localhost:3002' : 'ws://localhost:3002';
+      
+    const websocket = new WebSocket(wsUrl);
     
     websocket.onopen = () => {
-      console.log('WebSocket Connected');
+      console.log('WebSocket Connected to:', wsUrl);
     };
     
     websocket.onmessage = (event) => {
@@ -273,19 +273,6 @@ function App() {
       }
     };
 
-    websocket.onerror = (error) => {
-      console.error('WebSocket error:', error);
-      setError('Connection error occurred');
-      setDownloading(false);
-      setCurrentApp('');
-      setStatus(null);
-      setStatusMessage('');
-      setProgress(0);
-      setTimeout(() => setError(null), 3000);
-    };
-
-    setWs(websocket);
-
     return () => {
       if (websocket.readyState === WebSocket.OPEN) {
         websocket.close();
@@ -293,15 +280,16 @@ function App() {
     };
   }, []);
 
+  const API_URL = 'http://localhost:3001';
+  const WS_URL = 'ws://localhost:3002';
+
   useEffect(() => {
     const loadAppSources = async () => {
       setIsLoading(true);
       try {
-        // Load default app source from public folder
         const response = await fetch('/app-resources/cloudforce-apps.json');
         const defaultSource = await response.json();
         
-        // Load additional sources from localStorage
         const additionalSources = JSON.parse(localStorage.getItem('additionalAppSources') || '{}');
         
         setAppSources({
@@ -536,23 +524,17 @@ function App() {
       {/* Sidebar */}
       <Sidebar
         width={280}
-        categories={activeTab === 0 ? appSources[selectedSource]?.categories : gameSource?.categories}
+        categories={appSources[selectedSource]?.categories}
         selectedCategory={selectedCategory}
         onCategorySelect={setSelectedCategory}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         onClearSearch={() => setSearchQuery('')}
         appSources={appSources}
-        gameSource={gameSource}
         selectedSource={selectedSource}
         onSourceSelect={setSelectedSource}
-        activeTab={activeTab}
-        onTabChange={(e, newValue) => {
-          setActiveTab(newValue);
-          setSelectedCategory(null);
-          setSearchQuery('');
-          setSelectedSource('default');
-        }}
+        activeTab={0} // Force apps tab
+        onTabChange={() => {}} // Disable tab change
       />
 
       {/* Main Content Area */}
@@ -611,20 +593,7 @@ function App() {
             </Stack>
 
             <Stack direction="row" spacing={2} alignItems="center">
-              <Tabs 
-                value={activeTab}
-                onChange={handleTabChange}
-                sx={{
-                  '& .MuiTab-root': {
-                    color: 'rgba(255,255,255,0.7)',
-                    minWidth: 120,
-                  }
-                }}
-              >
-                <Tab icon={<Apps />} label="Apps" iconPosition="start" />
-                <Tab icon={<SportsEsports />} label="Games" iconPosition="start" />
-              </Tabs>
-
+              {/* Remove Tabs section */}
               <IconButton onClick={toggleColorMode} sx={{ color: 'white' }}>
                 {mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
               </IconButton>
@@ -637,12 +606,7 @@ function App() {
         </Box>
 
         {/* Main Content */}
-        <Box
-          sx={{
-            flexGrow: 1,
-            p: 3,
-          }}
-        >
+        <Box sx={{ flexGrow: 1, p: 3 }}>
           <GlobalProgress 
             show={downloading}
             appName={currentApp}
@@ -653,63 +617,33 @@ function App() {
             setDownloading={setDownloading}
           />
 
-          {activeTab === 0 ? (
-            <Stack spacing={3}>
-              <GlassBox>
-                <Stack spacing={3} p={3}>
-                  <Stack direction="row" spacing={2} alignItems="center">
-                    <Typography variant="h6" component="span">💡</Typography>
-                    <Typography variant="body1">
-                      Press the button twice to run the program
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row" spacing={2} alignItems="center">
-                    <Typography variant="h6" component="span">⚠️</Typography>
-                    <Typography variant="body1">
-                      Don't close while saving files
-                    </Typography>
-                  </Stack>
+          <Stack spacing={3}>
+            <GlassBox>
+              <Stack spacing={3} p={3}>
+                <Stack direction="row" spacing={2} alignItems="center">
+                  <Typography variant="h6" component="span">💡</Typography>
+                  <Typography variant="body1">
+                    Press the button twice to run the program
+                  </Typography>
                 </Stack>
-              </GlassBox>
-
-              <AppGrid
-                apps={filteredApps}
-                isLoading={isLoading}
-                onDownload={handleDownload}
-                isDownloading={downloading}
-                currentApp={currentApp}
-                searchQuery={searchQuery}
-              />
-            </Stack>
-          ) : (
-            <Stack spacing={3}>
-              <GlassBox>
-                <Stack spacing={3} p={3}>
-                  <Stack direction="row" spacing={2} alignItems="center">
-                    <Typography variant="h6" component="span">🎮</Typography>
-                    <Typography variant="body1">
-                      Games are downloaded using rclone from cloud storage
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row" spacing={2} alignItems="center">
-                    <Typography variant="h6" component="span">💾</Typography>
-                    <Typography variant="body1">
-                      Make sure you have enough storage space available
-                    </Typography>
-                  </Stack>
+                <Stack direction="row" spacing={2} alignItems="center">
+                  <Typography variant="h6" component="span">⚠️</Typography>
+                  <Typography variant="body1">
+                    Don't close while saving files
+                  </Typography>
                 </Stack>
-              </GlassBox>
+              </Stack>
+            </GlassBox>
 
-              <GameGrid
-                games={filteredGames}
-                isLoading={!gameSource}
-                onDownload={handleGameDownload}
-                isDownloading={downloading}
-                currentGame={currentApp}
-                searchQuery={searchQuery}
-              />
-            </Stack>
-          )}
+            <AppGrid
+              apps={filteredApps}
+              isLoading={isLoading}
+              onDownload={handleDownload}
+              isDownloading={downloading}
+              currentApp={currentApp}
+              searchQuery={searchQuery}
+            />
+          </Stack>
         </Box>
       </Box>
 
@@ -721,14 +655,12 @@ function App() {
         setSettings={setSettings}
         setSourceManagerOpen={setSourceManagerOpen}
         appSources={appSources}
-        gameSource={gameSource}
       />
       
       <SourceManager 
         open={sourceManagerOpen} 
         onClose={() => setSourceManagerOpen(false)}
         appSources={appSources}
-        gameSource={gameSource}
         onSourcesUpdate={handleSourcesUpdate}
       />
     </Box>
